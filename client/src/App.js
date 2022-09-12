@@ -30,16 +30,14 @@ const App = () => {
       <Container>
         <Router>
           <Menu darkMode={darkMode} setDarkMode={setDarkMode} />
-
           <Main>
             <Wrapper>
               <Navbar />
-
               <Routes>
                 <Route path="/">
                   <Route index element={<Home />} />
-                  <Route path="sign-in" element={<SignIn />} />
-                  <Route path="video">
+                  <Route path="/signin" element={<SignIn />} />
+                  <Route path="/video">
                     <Route path=":id" element={<Video />} />
                   </Route>
                 </Route>

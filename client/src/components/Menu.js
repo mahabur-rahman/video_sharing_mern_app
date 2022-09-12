@@ -19,6 +19,7 @@ import {
   HelpOutlineOutlined,
   SettingsBrightnessOutlined,
 } from "@mui/icons-material";
+import { Link } from "react-router-dom";
 
 const Container = styled.div`
   flex: 1;
@@ -90,15 +91,19 @@ const Menu = ({ darkMode, setDarkMode }) => {
   return (
     <Container>
       <Wrapper>
-        <Logo>
-          <Img src={LogoImg} />
-          YOUTUBE
-        </Logo>
+        <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
+          <Logo>
+            <Img src={LogoImg} />
+            YouTube
+          </Logo>
+        </Link>
 
-        <Item>
-          <Home />
-          Home
-        </Item>
+        <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
+          <Item>
+            <Home />
+            Home
+          </Item>
+        </Link>
 
         <Item>
           <ExploreOutlined />
@@ -120,10 +125,12 @@ const Menu = ({ darkMode, setDarkMode }) => {
         <Hr />
         <Login>
           Sign in to like videos, comment, and subscribe.
-          <Button>
-            <AccountCircleOutlined />
-            SIGN IN
-          </Button>
+          <Link to="/signin" style={{ textDecoration: "none" }}>
+            <Button>
+              <AccountCircleOutlined />
+              SIGN IN
+            </Button>
+          </Link>
         </Login>
         <Hr />
         <Title>BEST OF LAMATUBE</Title>
