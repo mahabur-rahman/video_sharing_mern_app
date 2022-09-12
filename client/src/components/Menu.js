@@ -22,8 +22,8 @@ import {
 
 const Container = styled.div`
   flex: 1;
-  background-color: black;
-  color: white;
+  background-color: ${({ theme }) => theme.bg};
+  color: ${({ theme }) => theme.text};
   height: 100vh;
   font-size: 14px;
   position: sticky;
@@ -54,13 +54,13 @@ const Item = styled.div`
   transition: 0.2s all ease;
 
   &:hover {
-    background-color: red;
+    background-color: ${({ theme }) => theme.soft};
   }
 `;
 
 const Hr = styled.div`
   margin: 15px 0px;
-  border: 0.5px solid #202020;
+  border: ${({ theme }) => theme.soft};
 `;
 
 const Login = styled.div``;
@@ -86,7 +86,7 @@ const Title = styled.h2`
   margin-bottom: 20px;
 `;
 
-const Menu = () => {
+const Menu = ({ darkMode, setDarkMode }) => {
   return (
     <Container>
       <Wrapper>
@@ -164,9 +164,9 @@ const Menu = () => {
           <HelpOutlineOutlined />
           Help
         </Item>
-        <Item>
+        <Item onClick={() => setDarkMode(!darkMode)}>
           <SettingsBrightnessOutlined />
-          Mode
+          {darkMode ? "DarkMode" : "lightMode"}
         </Item>
       </Wrapper>
     </Container>
