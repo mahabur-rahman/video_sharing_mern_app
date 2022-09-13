@@ -17,8 +17,8 @@ const connectedDB = require("./db/connect");
 connectedDB();
 
 // Middlewares
-app.use(express.json());
 app.use(cookieParser());
+app.use(express.json());
 app.use("/api/auth", authRoute);
 
 // ERROR HANDLER MIDDLEWARE
