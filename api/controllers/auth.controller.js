@@ -2,6 +2,9 @@ const UserModel = require("../models/User.model");
 const bcrypt = require("bcryptjs");
 // custom errorHandler
 const createError = require("../error");
+const jwt = require("jsonwebtoken");
+
+// REGISTER | CREATE USER | POST METHOD
 
 const registerUser = async (req, res, next) => {
   try {
@@ -19,4 +22,29 @@ const registerUser = async (req, res, next) => {
   }
 };
 
-module.exports = { registerUser };
+// LOGIN | POST METHOD
+const loginUser = async (req, res, next) => {
+  try {
+    const user = await UserModel.findOne({ name: req.body.name });
+    // console.log(user);
+    if (!user) return next(createError(404, "User not found!"));
+
+    const isCorrect = await bcrypt.compare(req.body.password, user.password);
+    if (!isCorrect) return next(createError(400, "Wrong credentials!"));
+
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+
+    const { password, ...others } = user._doc;
+
+    return res
+      .cookie("access_token", token, {
+        httpOnly: true,
+      })
+      .status(200)
+      .json(others);
+  } catch (err) {
+    next(err);
+  }
+};
+
+module.exports = { registerUser, loginUser };
