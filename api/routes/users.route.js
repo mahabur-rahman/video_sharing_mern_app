@@ -18,7 +18,7 @@ router.delete("/:id", verifyToken, deleteUser);
 // GET SINGLE USER
 router.get("/find/:id", getSingleUser);
 
-// SUBSCRIBE A USER
+// SUBSCRIBE A USER | subscribe channel
 router.put("/subscribe/:id", verifyToken, subscribeUser);
 
 // UNSUBSCRIBE A USER

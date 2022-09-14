@@ -107,6 +107,7 @@ const random = async (req, res, next) => {
 const sub = async (req, res, next) => {
   try {
     const user = await UserModel.findById(req.user.id);
+
     const subscribedChannels = user.subscribedUsers;
 
     const list = await Promise.all(
@@ -123,6 +124,21 @@ const sub = async (req, res, next) => {
   }
 };
 
+// GET BY TAGS
+const getByTag = async (req, res, next) => {
+  const tags = req.query.tags.split(",");
+
+  //   console.log(tags);
+
+  try {
+    const videos = await VideoModel.find({ tags: { $in: tags } }).limit(20);
+
+    return res.status(200).json(videos);
+  } catch (err) {
+    next(err);
+  }
+};
+
 // exports
 module.exports = {
   addVideo,
@@ -133,4 +149,5 @@ module.exports = {
   trend,
   random,
   sub,
+  getByTag,
 };

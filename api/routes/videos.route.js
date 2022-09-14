@@ -10,6 +10,7 @@ const {
   trend,
   random,
   sub,
+  getByTag,
 } = require("../controllers/video.controller");
 
 // CREATE A VIDEO
@@ -33,8 +34,11 @@ router.get("/trend", trend);
 // RANDOM | GET
 router.get("/random", random);
 
-// SUBSCRIBE VIDEOS
+// SUBSCRIBE all VIDEOS or channels
 router.get("/sub", verifyToken, sub);
+
+// GET BY TAGS WITH QUERY
+router.get("/tags", getByTag);
 
 // export
 module.exports = router;
