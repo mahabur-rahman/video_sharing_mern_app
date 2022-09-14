@@ -6,6 +6,7 @@ const {
   updatedVideo,
   deletedVideo,
   getSingleVideo,
+  addView,
 } = require("../controllers/video.controller");
 
 // CREATE A VIDEO
@@ -19,6 +20,9 @@ router.delete("/:id", verifyToken, deletedVideo);
 
 // GET SINGLE VIDEO
 router.get("/find/:id", getSingleVideo);
+
+// INCREMENT VIEW
+router.put("/view/:id", addView);
 
 // export
 module.exports = router;

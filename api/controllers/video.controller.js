@@ -67,10 +67,24 @@ const getSingleVideo = async (req, res, next) => {
   }
 };
 
+// ADD VIEW
+const addView = async (req, res, next) => {
+  try {
+    await VideoModel.findByIdAndUpdate(req.params.id, {
+      $inc: { views: 1 },
+    });
+    a;
+    return res.status(200).json("The view has been increased..");
+  } catch (err) {
+    next(err);
+  }
+};
+
 // exports
 module.exports = {
   addVideo,
   updatedVideo,
   deletedVideo,
   getSingleVideo,
+  addView,
 };
