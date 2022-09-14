@@ -21,7 +21,22 @@ const updatedUser = async (req, res, next) => {
   }
 };
 
+// DELETE USER
+const deleteUser = async (req, res, next) => {
+  if (req.params.id === req.user.id) {
+    try {
+      await UserModel.findByIdAndDelete(req.params.id);
+      return res.status(200).json("user has been deleted...");
+    } catch (err) {
+      next(err);
+    }
+  } else {
+    return next(createError(403, "you can delete only your account!"));
+  }
+};
+
 // export
 module.exports = {
   updatedUser,
+  deleteUser,
 };
