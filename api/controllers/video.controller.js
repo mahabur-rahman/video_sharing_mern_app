@@ -139,6 +139,20 @@ const getByTag = async (req, res, next) => {
   }
 };
 
+// SEARCH WITH QUERY or title
+const search = async (req, res, next) => {
+  const query = req.query.q;
+  try {
+    const videos = await VideoModel.find({
+      title: { $regex: query, $options: "i" }, // capital / small letter don't face like that 👍
+    }).limit(40);
+
+    return res.status(200).json(videos);
+  } catch (err) {
+    next(err);
+  }
+};
+
 // exports
 module.exports = {
   addVideo,
@@ -150,4 +164,5 @@ module.exports = {
   random,
   sub,
   getByTag,
+  search,
 };

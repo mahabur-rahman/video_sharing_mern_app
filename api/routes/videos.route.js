@@ -11,6 +11,7 @@ const {
   random,
   sub,
   getByTag,
+  search,
 } = require("../controllers/video.controller");
 
 // CREATE A VIDEO
@@ -39,6 +40,9 @@ router.get("/sub", verifyToken, sub);
 
 // GET BY TAGS WITH QUERY
 router.get("/tags", getByTag);
+
+// SEARCH WITH QUERY or title
+router.get("/search", search);
 
 // export
 module.exports = router;
