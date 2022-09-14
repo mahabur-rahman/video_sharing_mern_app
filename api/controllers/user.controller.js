@@ -76,7 +76,7 @@ const unsubscribeUser = async (req, res, next) => {
       $inc: { subscribers: -1 },
     });
 
-    return res.status(200).json("Unsubscription  successful!");
+    return res.status(200).json("Unsubscription successful!");
   } catch (err) {
     next(err);
   }

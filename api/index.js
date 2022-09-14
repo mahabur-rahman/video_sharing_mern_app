@@ -6,6 +6,7 @@ const cookieParser = require("cookie-parser");
 // ROUTE
 const authRoute = require("./routes/auth.route");
 const userRoute = require("./routes/users.route");
+const videoRoute = require("./routes/videos.route");
 
 // env config
 const dotenv = require("dotenv");
@@ -22,6 +23,7 @@ app.use(cookieParser());
 app.use(express.json());
 app.use("/api/auth", authRoute);
 app.use("/api/users", userRoute);
+app.use("/api/videos", videoRoute);
 
 // ERROR HANDLER MIDDLEWARE
 app.use((err, req, res, next) => {
