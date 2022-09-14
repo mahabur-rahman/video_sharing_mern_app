@@ -8,6 +8,7 @@ const {
   getSingleVideo,
   addView,
   trend,
+  random,
 } = require("../controllers/video.controller");
 
 // CREATE A VIDEO
@@ -27,6 +28,9 @@ router.put("/view/:id", addView);
 
 // TREND VIDEO | GET
 router.get("/trend", trend);
+
+// RANDOM | GET
+router.get("/random", random);
 
 // export
 module.exports = router;

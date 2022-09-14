@@ -91,6 +91,17 @@ const trend = async (req, res, next) => {
   }
 };
 
+// RANDOM VIDEOS
+const random = async (req, res, next) => {
+  try {
+    const videos = await VideoModel.aggregate([{ $sample: { size: 40 } }]);
+
+    return res.status(200).json(videos);
+  } catch (err) {
+    next(err);
+  }
+};
+
 // exports
 module.exports = {
   addVideo,
@@ -99,4 +110,5 @@ module.exports = {
   getSingleVideo,
   addView,
   trend,
+  random,
 };
