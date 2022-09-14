@@ -35,8 +35,20 @@ const deleteUser = async (req, res, next) => {
   }
 };
 
+// GET SINGLE USER
+const getSingleUser = async (req, res, next) => {
+  try {
+    const user = await UserModel.findById(req.params.id);
+
+    return res.status(200).json(user);
+  } catch (err) {
+    next(err);
+  }
+};
+
 // export
 module.exports = {
   updatedUser,
   deleteUser,
+  getSingleUser,
 };
