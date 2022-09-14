@@ -1,5 +1,6 @@
 const createError = require("../error");
 const UserModel = require("../models/User.model");
+const VideoModel = require("../models/Video.model");
 
 const updatedUser = async (req, res, next) => {
   if (req.params.id === req.user.id) {
@@ -82,6 +83,40 @@ const unsubscribeUser = async (req, res, next) => {
   }
 };
 
+// LIKE A VIDEO
+const likeVideo = async (req, res, next) => {
+  const id = req.user.id;
+  const videoId = req.params.videoId;
+
+  try {
+    await VideoModel.findByIdAndUpdate(videoId, {
+      $addToSet: { likes: id },
+      $pull: { dislikes: id },
+    });
+
+    return res.status(200).json("The video has been liked.");
+  } catch (err) {
+    next(err);
+  }
+};
+
+// DISLIKE A VIDEO
+const dislike = async (req, res, next) => {
+  const id = req.user.id;
+  const videoId = req.params.videoId;
+
+  try {
+    await VideoModel.findByIdAndUpdate(videoId, {
+      $addToSet: { dislikes: id },
+      $pull: { likes: id },
+    });
+
+    return res.status(200).json("The video has been disliked.");
+  } catch (err) {
+    next(err);
+  }
+};
+
 // export
 module.exports = {
   updatedUser,
@@ -89,4 +124,6 @@ module.exports = {
   getSingleUser,
   subscribeUser,
   unsubscribeUser,
+  likeVideo,
+  dislike,
 };
