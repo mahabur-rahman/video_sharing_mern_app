@@ -21,7 +21,7 @@ const deleteComment = async (req, res, next) => {
     // console.log(comment);
 
     const video = await VideoModel.findById(req.params.id);
-    console.log(video);
+    // console.log(video);
 
     if (req.user.id === comment.userId || req.user.id === video.userId) {
       await CommentModel.findByIdAndDelete(req.params.id);
@@ -35,5 +35,16 @@ const deleteComment = async (req, res, next) => {
   }
 };
 
+// GET ALL COMMENTS
+const getComments = async (req, res, next) => {
+  try {
+    const comments = await CommentModel.find({ videoId: req.params.videoId }); // comments : videoId
+
+    return res.status(200).json(comments);
+  } catch (err) {
+    next(err);
+  }
+};
+
 // exports
-module.exports = { addComment, deleteComment };
+module.exports = { addComment, deleteComment, getComments };
