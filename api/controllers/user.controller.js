@@ -46,9 +46,47 @@ const getSingleUser = async (req, res, next) => {
   }
 };
 
+// SUBSCRIBE A USER
+const subscribeUser = async (req, res, next) => {
+  try {
+    await UserModel.findByIdAndUpdate(req.user.id, {
+      // user id
+      $push: { subscribedUsers: req.params.id }, // other channel id
+    });
+
+    await UserModel.findByIdAndUpdate(req.params.id, {
+      $inc: { subscribers: 1 },
+    });
+
+    return res.status(200).json("Subscription successful!");
+  } catch (err) {
+    next(err);
+  }
+};
+
+// UNSUBSCRIBE A USER
+const unsubscribeUser = async (req, res, next) => {
+  try {
+    await UserModel.findByIdAndUpdate(req.user.id, {
+      // user id
+      $pull: { subscribedUsers: req.params.id }, // other channel id
+    });
+
+    await UserModel.findByIdAndUpdate(req.params.id, {
+      $inc: { subscribers: -1 },
+    });
+
+    return res.status(200).json("Unsubscription  successful!");
+  } catch (err) {
+    next(err);
+  }
+};
+
 // export
 module.exports = {
   updatedUser,
   deleteUser,
   getSingleUser,
+  subscribeUser,
+  unsubscribeUser,
 };
