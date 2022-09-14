@@ -7,6 +7,7 @@ const {
   deletedVideo,
   getSingleVideo,
   addView,
+  trend,
 } = require("../controllers/video.controller");
 
 // CREATE A VIDEO
@@ -23,6 +24,9 @@ router.get("/find/:id", getSingleVideo);
 
 // INCREMENT VIEW
 router.put("/view/:id", addView);
+
+// TREND VIDEO | GET
+router.get("/trend", trend);
 
 // export
 module.exports = router;

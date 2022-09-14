@@ -67,7 +67,7 @@ const getSingleVideo = async (req, res, next) => {
   }
 };
 
-// ADD VIEW
+// ADD VIEW | INCREMENT
 const addView = async (req, res, next) => {
   try {
     await VideoModel.findByIdAndUpdate(req.params.id, {
@@ -80,6 +80,17 @@ const addView = async (req, res, next) => {
   }
 };
 
+// GET TREND VIDEO
+const trend = async (req, res, next) => {
+  try {
+    const videos = await VideoModel.find().sort({ views: -1 });
+
+    return res.status(200).json(videos);
+  } catch (err) {
+    next(err);
+  }
+};
+
 // exports
 module.exports = {
   addVideo,
@@ -87,4 +98,5 @@ module.exports = {
   deletedVideo,
   getSingleVideo,
   addView,
+  trend,
 };
