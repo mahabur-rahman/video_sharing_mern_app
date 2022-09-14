@@ -1,4 +1,5 @@
 const createError = require("../error");
+const UserModel = require("../models/User.model");
 const VideoModel = require("../models/Video.model");
 
 // CRATE A VIDEO
@@ -102,6 +103,26 @@ const random = async (req, res, next) => {
   }
 };
 
+// SUBSCRIBE VIDEOS
+const sub = async (req, res, next) => {
+  try {
+    const user = await UserModel.findById(req.user.id);
+    const subscribedChannels = user.subscribedUsers;
+
+    const list = await Promise.all(
+      subscribedChannels.map(async (channelId) => {
+        return await VideoModel.find({ userId: channelId });
+      })
+    );
+
+    return res
+      .status(200)
+      .json(list.flat().sort((a, b) => b.createdAt - a.createdAt));
+  } catch (err) {
+    next(err);
+  }
+};
+
 // exports
 module.exports = {
   addVideo,
@@ -111,4 +132,5 @@ module.exports = {
   addView,
   trend,
   random,
+  sub,
 };

@@ -9,6 +9,7 @@ const {
   addView,
   trend,
   random,
+  sub,
 } = require("../controllers/video.controller");
 
 // CREATE A VIDEO
@@ -31,6 +32,9 @@ router.get("/trend", trend);
 
 // RANDOM | GET
 router.get("/random", random);
+
+// SUBSCRIBE VIDEOS
+router.get("/sub", verifyToken, sub);
 
 // export
 module.exports = router;
