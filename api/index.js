@@ -7,6 +7,7 @@ const cookieParser = require("cookie-parser");
 const authRoute = require("./routes/auth.route");
 const userRoute = require("./routes/users.route");
 const videoRoute = require("./routes/videos.route");
+const commentRoute = require("./routes/comments.route");
 
 // env config
 const dotenv = require("dotenv");
@@ -24,6 +25,7 @@ app.use(express.json());
 app.use("/api/auth", authRoute);
 app.use("/api/users", userRoute);
 app.use("/api/videos", videoRoute);
+app.use("/api/comments", commentRoute);
 
 // ERROR HANDLER MIDDLEWARE
 app.use((err, req, res, next) => {
