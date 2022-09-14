@@ -5,6 +5,7 @@ const cookieParser = require("cookie-parser");
 
 // ROUTE
 const authRoute = require("./routes/auth.route");
+const userRoute = require("./routes/users.route");
 
 // env config
 const dotenv = require("dotenv");
@@ -20,6 +21,7 @@ connectedDB();
 app.use(cookieParser());
 app.use(express.json());
 app.use("/api/auth", authRoute);
+app.use("/api/users", userRoute);
 
 // ERROR HANDLER MIDDLEWARE
 app.use((err, req, res, next) => {
