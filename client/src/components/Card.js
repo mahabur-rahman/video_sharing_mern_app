@@ -68,7 +68,10 @@ const Card = ({ type, video }) => {
   }, [video.userId]);
 
   return (
-    <Link to="/video/test" style={{ textDecoration: "none", color: "inherit" }}>
+    <Link
+      to={`/video/${video._id}`}
+      style={{ textDecoration: "none", color: "inherit" }}
+    >
       <Container type={type}>
         <Image type={type} src={video.imgUrl} />
 
