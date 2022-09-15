@@ -1,5 +1,8 @@
-import React from "react";
+import axios from "axios";
+import React, { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import styled from "styled-components";
+import { loginFailure, loginStart, loginSuccess } from "../redux/userSlice";
 
 const Container = styled.div`
   display: flex;
@@ -51,6 +54,7 @@ const Button = styled.button`
 const More = styled.div`
   display: flex;
   margin-top: 10px;
+
   font-size: 12px;
   color: ${({ theme }) => theme.textSoft};
 `;
@@ -64,18 +68,62 @@ const Link = styled.span`
 `;
 
 const SignIn = () => {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const dispatch = useDispatch();
+
+  // login
+  const handleLogin = async (e) => {
+    e.preventDefault();
+
+    dispatch(loginStart());
+
+    try {
+      const res = await axios.post("/auth/login", { name, password });
+      console.log(res.data);
+
+      dispatch(loginSuccess(res.data));
+    } catch (err) {
+      console.log(err);
+      dispatch(loginFailure());
+    }
+  };
+
   return (
     <Container>
       <Wrapper>
         <Title>Sign in</Title>
         <SubTitle>To continue to youTube</SubTitle>
-        <Input placeholder="username" />
-        <Input type="password" placeholder="password" />
-        <Button>Sign in</Button>
+        <Input
+          placeholder="username"
+          onChange={(e) => setName(e.target.value)}
+        />
+
+        <Input
+          type="password"
+          placeholder="password"
+          onChange={(e) => setPassword(e.target.value)}
+        />
+
+        <Button onClick={handleLogin}>Sign in</Button>
+
         <Title>or</Title>
-        <Input placeholder="username" />
-        <Input placeholder="email" />
-        <Input type="password" placeholder="password" />
+
+        <Input
+          placeholder="username"
+          onChange={(e) => setName(e.target.value)}
+        />
+
+        <Input placeholder="email" onChange={(e) => setEmail(e.target.value)} />
+
+        <Input
+          type="password"
+          placeholder="password"
+          onChange={(e) => setPassword(e.target.value)}
+        />
+
         <Button>Sign up</Button>
       </Wrapper>
       <More>
