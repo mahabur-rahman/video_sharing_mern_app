@@ -105,14 +105,23 @@ const Menu = ({ darkMode, setDarkMode }) => {
           </Item>
         </Link>
 
-        <Item>
-          <ExploreOutlined />
-          Explore
-        </Item>
-        <Item>
-          <SubscriptionsOutlined />
-          Subscriptions
-        </Item>
+        <Link to="/trends" style={{ textDecoration: "none", color: "inherit" }}>
+          <Item>
+            <ExploreOutlined />
+            Explore
+          </Item>
+        </Link>
+
+        <Link
+          to="/subscriptions"
+          style={{ textDecoration: "none", color: "inherit" }}
+        >
+          <Item>
+            <ExploreOutlined />
+            Subscriptions
+          </Item>
+        </Link>
+
         <Hr />
         <Item>
           <VideoLibraryOutlined />
