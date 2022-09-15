@@ -31,6 +31,7 @@ const ChannelImage = styled.img`
   height: 36px;
   width: 36px;
   border-radius: 50%;
+  background-color: "#ddd";
   display: ${(props) => props.type === "sm" && "none"};
 `;
 const Texts = styled.div``;
@@ -54,20 +55,17 @@ const Info = styled.div`
 `;
 
 const Card = ({ type, video }) => {
-  const [channel, setChannel] = useState({})
+  const [channel, setChannel] = useState({});
 
+  // fetchChannel
+  useEffect(() => {
+    const fetchChannel = async () => {
+      const res = await axios.get(`/users/find/${video.userId}`);
+      setChannel(res.data);
+    };
 
-  // fetchChannel 
-  useEffect(() =>{
-    const fetchChannel = async() =>{
-      const res = await axios.get(`/users/find/${video.userId}`)
-      setChannel(res.data)
-    }
-
-    fetchChannel()
-  },[video.userId])
-
-
+    fetchChannel();
+  }, [video.userId]);
 
   return (
     <Link to="/video/test" style={{ textDecoration: "none", color: "inherit" }}>
@@ -75,10 +73,7 @@ const Card = ({ type, video }) => {
         <Image type={type} src={video.imgUrl} />
 
         <Details type={type}>
-          <ChannelImage
-            type={type}
-            src={channel.img}
-          />
+          <ChannelImage type={type} src={channel.img} />
           <Texts>
             <Title>{video.title}</Title>
             <ChannelName>{channel.name}</ChannelName>
