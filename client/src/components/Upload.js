@@ -1,5 +1,15 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import {
+  getStorage,
+  ref,
+  uploadBytesResumable,
+  getDownloadURL,
+} from "firebase/storage";
+
+import app from "../firebase";
+import axios from "axios";
 
 const Container = styled.div`
   width: 100%;
@@ -71,6 +81,8 @@ function Upload({ setOpen }) {
   const [imgPerc, setImgPerc] = useState(0);
   const [videoPerc, setVideoPerc] = useState(0);
 
+  const navigate = useNavigate();
+
   //   handleChange  | title, desc
   const handleChange = (e) => {
     setInputs((prev) => {
@@ -83,10 +95,65 @@ function Upload({ setOpen }) {
     setTags(e.target.value.split(","));
   };
 
-  //   handleUpload
-  const handleUpload = (e) => {
+  //   handleUpload button clicked
+  const handleUpload = async (e) => {
     e.preventDefault();
+
+    const res = await axios.post("/videos", { ...inputs, tags });
+
+    setOpen(false);
+
+    res.status === 200 && navigate(`/video/${res.data._id}`);
   };
+
+  //   uploadFile
+  const uploadFile = (file, urlType) => {
+    const storage = getStorage(app);
+    const fileName = new Date().getTime() + file.name;
+    const storageRef = ref(storage, fileName);
+    const uploadTask = uploadBytesResumable(storageRef, file);
+
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        const progress =
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        urlType === "imgUrl"
+          ? setImgPerc(Math.round(progress))
+          : setVideoPerc(Math.round(progress));
+        switch (snapshot.state) {
+          case "paused":
+            console.log("Upload is paused");
+            break;
+          case "running":
+            console.log("Upload is running");
+            break;
+          default:
+            break;
+        }
+      },
+      (error) => {},
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+          setInputs((prev) => {
+            return { ...prev, [urlType]: downloadURL };
+          });
+        });
+      }
+    );
+  };
+
+  //   for img
+
+  useEffect(() => {
+    img && uploadFile(img, "imgUrl");
+  }, [img]);
+
+  // for video
+
+  useEffect(() => {
+    video && uploadFile(video, "videoUrl");
+  }, [video]);
 
   return (
     <Container>
@@ -95,11 +162,15 @@ function Upload({ setOpen }) {
         <Title>Upload a New Video</Title>
         <Label>Video:</Label>
 
-        <Input
-          type="file"
-          accept="video/*"
-          onChange={(e) => setVideo(e.target.files[0])}
-        />
+        {videoPerc > 0 ? (
+          "Uploading video :" + videoPerc + " %"
+        ) : (
+          <Input
+            type="file"
+            accept="video/*"
+            onChange={(e) => setVideo(e.target.files[0])}
+          />
+        )}
 
         <Input
           type="text"
@@ -121,11 +192,15 @@ function Upload({ setOpen }) {
 
         <Label>Image:</Label>
 
-        <Input
-          type="file"
-          accept="image/*"
-          onChange={(e) => setImg(e.target.files[0])}
-        />
+        {imgPerc > 0 ? (
+          "Uploading Image " + imgPerc + " %"
+        ) : (
+          <Input
+            type="file"
+            accept="image/*"
+            onChange={(e) => setImg(e.target.files[0])}
+          />
+        )}
 
         <Button onClick={handleUpload}>Upload</Button>
       </Wrapper>
